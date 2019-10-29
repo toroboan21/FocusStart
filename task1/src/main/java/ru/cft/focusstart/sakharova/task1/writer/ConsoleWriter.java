@@ -13,8 +13,4 @@ public class ConsoleWriter {
     public void writeWithLineBreak(String line) {
         System.out.println(line);
     }
-
-    public void writeWithFormat(String format, Object... lines) {
-        System.out.printf(format, lines);
-    }
 }

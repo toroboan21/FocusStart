@@ -1,10 +1,10 @@
 package ru.cft.focusstart.sakharova.task1.parameters;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public
 class TableParameters {
 
@@ -17,7 +17,7 @@ class TableParameters {
     public static final int FIRST_CELL_LENGTH = 2;
     public static final int ROW_SEPARATOR_LENGTH = ROW_SEPARATOR.length();
 
-    private int tableSize;
+    private final int tableSize;
 
     public String getCellFormat(int cellDigitsNumber) {
         return "%" + cellDigitsNumber + "d";
