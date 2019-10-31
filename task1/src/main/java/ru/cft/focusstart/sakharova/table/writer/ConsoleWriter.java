@@ -1,4 +1,4 @@
-package ru.cft.focusstart.sakharova.task1.writer;
+package ru.cft.focusstart.sakharova.table.writer;
 
 public class ConsoleWriter {
 

@@ -1,4 +1,4 @@
-package ru.cft.focusstart.sakharova.task1.formatter;
+package ru.cft.focusstart.sakharova.table.formatter;
 
 public class Formatter {
 

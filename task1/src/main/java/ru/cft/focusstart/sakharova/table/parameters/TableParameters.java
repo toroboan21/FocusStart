@@ -1,4 +1,4 @@
-package ru.cft.focusstart.sakharova.task1.parameters;
+package ru.cft.focusstart.sakharova.table.parameters;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

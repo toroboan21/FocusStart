@@ -1,9 +1,9 @@
-package ru.cft.focusstart.sakharova.task1.builder;
+package ru.cft.focusstart.sakharova.table.builder;
 
 import lombok.RequiredArgsConstructor;
-import ru.cft.focusstart.sakharova.task1.formatter.Formatter;
-import ru.cft.focusstart.sakharova.task1.parameters.TableParameters;
-import ru.cft.focusstart.sakharova.task1.writer.ConsoleWriter;
+import ru.cft.focusstart.sakharova.table.formatter.Formatter;
+import ru.cft.focusstart.sakharova.table.parameters.TableParameters;
+import ru.cft.focusstart.sakharova.table.writer.ConsoleWriter;
 
 @RequiredArgsConstructor
 public class TableBuilder {
