@@ -5,8 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public
-class TableParameters {
+public class TableParameters {
 
     public static final String VERTICAL_SEPARATOR = "|";
     public static final String HORIZONTAL_SEPARATOR = "-";
