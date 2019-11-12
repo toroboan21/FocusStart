@@ -26,7 +26,7 @@ public class Main {
             Writer writer = new Writer();
             writer.write(programArgs, shape.getDescription());
             System.out.println("Работа программы успешно завершена!");
-            log.info("Работа программы была завершена успешно.", programArgs.getInputPath());
+            log.info("Работа программы была завершена успешно.");
         } catch (ParameterException e) {
             log.error("Ошибка при обработке параметров:", e);
             System.out.println("Ошибка при вводе параметров! Список параметров:");

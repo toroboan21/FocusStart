@@ -6,8 +6,8 @@ public abstract class Shape {
     static final String MEASUREMENT_UNIT_FOR_ANGLE = "°";
 
     void checkIsNegative(double... parameters) {
-        for (int i = 0; i <= parameters.length - 1; i++) {
-            if (parameters[i] - 0 < EPSILON) {
+        for (double parameter : parameters) {
+            if (parameter < EPSILON) {
                 throw new IllegalArgumentException("Параметры фигуры не могут быть орицательными числами!");
             }
         }

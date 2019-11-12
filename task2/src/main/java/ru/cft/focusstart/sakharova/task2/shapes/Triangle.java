@@ -1,12 +1,13 @@
 package ru.cft.focusstart.sakharova.task2.shapes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class Triangle extends Shape {
-    private double sideALength;
-    private double sideBLength;
-    private double sideCLength;
+    private static final String NAME = "Треугольник";
+
+    private final double sideALength;
+    private final double sideBLength;
+    private final double sideCLength;
 
     Triangle(double sideALength, double sideBLength, double sideCLength) {
         checkIsNegative(sideALength, sideBLength, sideCLength);
@@ -39,7 +40,7 @@ class Triangle extends Shape {
 
     @Override
     public String getName() {
-        return "Треугольник";
+        return NAME;
     }
 
     private double calculateAngle(double oppositeSide, double firstOtherSide, double secondOtherSide) {
@@ -48,11 +49,10 @@ class Triangle extends Shape {
     }
 
     private List<Double> calculateOppositeAngles() {
-        List<Double> oppositeAngles = new ArrayList<>(3);
-        oppositeAngles.add(calculateAngle(sideALength, sideBLength, sideCLength));
-        oppositeAngles.add(calculateAngle(sideBLength, sideALength, sideCLength));
-        oppositeAngles.add(calculateAngle(sideCLength, sideALength, sideBLength));
-        return oppositeAngles;
+        return List.of(
+                calculateAngle(sideALength, sideBLength, sideCLength),
+                calculateAngle(sideBLength, sideALength, sideCLength),
+                calculateAngle(sideCLength, sideALength, sideBLength));
     }
 
     @Override

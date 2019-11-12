@@ -21,7 +21,7 @@ public class ShapeFactory {
                     throw new IllegalArgumentException("Неверно введен тип фигуры!");
             }
         } catch (NumberFormatException e) {
-            log.error("Ошибка преобразования в double.");
+            log.error("Ошибка преобразования в double: ", e);
             throw new IllegalArgumentException("Неверно введены параметры фигуры! " +
                     "Должны быть переданы дробные или целые числа. " +
                     "В качестве десятичного разделителя нужно использовать точку!");

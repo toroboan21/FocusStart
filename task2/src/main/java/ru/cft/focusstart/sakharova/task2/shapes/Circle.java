@@ -1,7 +1,9 @@
 package ru.cft.focusstart.sakharova.task2.shapes;
 
 class Circle extends Shape {
-    private double radius;
+    private static final String NAME = "Круг";
+
+    private final double radius;
 
     Circle(double radius) {
         checkIsNegative(radius);
@@ -20,7 +22,7 @@ class Circle extends Shape {
 
     @Override
     public String getName() {
-        return "Круг";
+        return NAME;
     }
 
     private double calculateDiameter() {

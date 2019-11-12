@@ -1,8 +1,10 @@
 package ru.cft.focusstart.sakharova.task2.shapes;
 
 class Rectangle extends Shape {
-    private double length;
-    private double width;
+    private static final String NAME = "Прямоугольник";
+
+    private final double length;
+    private final double width;
 
     Rectangle(double sideALength, double sideBLength) {
         checkIsNegative(sideALength, sideBLength);
@@ -22,7 +24,7 @@ class Rectangle extends Shape {
 
     @Override
     public String getName() {
-        return "Прямоугольник";
+        return NAME;
     }
 
     private double calculateDiagonalLength() {
