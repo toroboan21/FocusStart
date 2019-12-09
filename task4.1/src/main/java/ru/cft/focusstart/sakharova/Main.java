@@ -11,17 +11,18 @@ import java.util.concurrent.Future;
 
 @Slf4j
 public class Main {
-    private static final int INPUT_PARAMETER = 300000000;
-    private static final int THREAD_NUMBER = 20;
     private static final int INTERVAL_START = 1;
+    private static final int INTERVAL_FINISH = 300000000;
+    private static final int THREAD_NUMBER = 20;
 
     public static void main(String[] args) {
         List<Task> tasks = new ArrayList<>(THREAD_NUMBER);
 
-        int intervalLength = INPUT_PARAMETER / THREAD_NUMBER;
+        int intervalLength = INTERVAL_FINISH / THREAD_NUMBER;
         int lastNumberModifier = intervalLength - 1;
 
-        for (int i = INTERVAL_START, j = 1; j <= THREAD_NUMBER; i += intervalLength, j++) {
+        for (int i = INTERVAL_START, threadCounter = 1; threadCounter <= THREAD_NUMBER;
+             i += intervalLength, threadCounter++) {
             int lastNumber = i + lastNumberModifier;
             tasks.add(new Task(i, lastNumber));
         }

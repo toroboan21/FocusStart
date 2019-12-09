@@ -1,13 +1,11 @@
 package ru.cft.focusstart.sakharova;
 
 import lombok.AllArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.Callable;
 
 @Slf4j
-@Setter
 @AllArgsConstructor
 public class Task implements Callable<Double> {
     private int firstNumber;
