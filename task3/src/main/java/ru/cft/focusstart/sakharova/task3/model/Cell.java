@@ -11,14 +11,11 @@ import ru.cft.focusstart.sakharova.task3.common.CellState;
 class Cell {
     private int x;
     private int y;
-    @Setter
-    private boolean isVisited;
 
     @Setter
     private CellState cellState;
     @Setter
     private CellContent cellContent;
-
 
     @EqualsAndHashCode.Exclude
     private int minesAroundNumber;

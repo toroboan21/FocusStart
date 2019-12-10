@@ -1,16 +1,22 @@
 package ru.cft.focusstart.sakharova.task3.controller;
 
-import lombok.RequiredArgsConstructor;
 import ru.cft.focusstart.sakharova.task3.model.Model;
 
-@RequiredArgsConstructor
+import java.util.concurrent.atomic.AtomicLong;
+
 class Timer {
 
     private static final int SLEEP_TIME = 300;
 
-    private long timeSpent;
     private final Model model;
+
+    private AtomicLong timeSpent;
     private Thread timerThread;
+
+    Timer(Model model) {
+        this.model = model;
+        timeSpent = new AtomicLong();
+    }
 
     void start() {
         timerThread = new Thread(() -> {
@@ -18,9 +24,9 @@ class Timer {
 
             try {
                 while (!Thread.currentThread().isInterrupted()) {
-                    timeSpent = System.currentTimeMillis() - startTime;
+                    timeSpent.set(System.currentTimeMillis() - startTime);
 
-                    model.setTime(timeSpent);
+                    model.setTime(timeSpent.get());
 
                     Thread.sleep(SLEEP_TIME);
                 }
@@ -32,8 +38,8 @@ class Timer {
     }
 
     private void setStartValue() {
-        timeSpent = 0L;
-        model.setTime(timeSpent);
+        timeSpent.set(0L);
+        model.setTime(timeSpent.get());
     }
 
     void stop() {

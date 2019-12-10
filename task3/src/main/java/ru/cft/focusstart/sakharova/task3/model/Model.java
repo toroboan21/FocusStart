@@ -1,11 +1,14 @@
 package ru.cft.focusstart.sakharova.task3.model;
 
 import ru.cft.focusstart.sakharova.task3.common.DifficultyMode;
-import ru.cft.focusstart.sakharova.task3.common.Observer;
+import ru.cft.focusstart.sakharova.task3.common.MinesweeperView;
+import ru.cft.focusstart.sakharova.task3.common.Score;
+
+import java.util.Map;
 
 public interface Model {
 
-    void init();
+    void prepareGame();
 
     void startGame(int x, int y);
 
@@ -19,24 +22,21 @@ public interface Model {
 
     void setFlag(int x, int y);
 
-    void setObserver(Observer observer);
+    void setMinesweeperView(MinesweeperView minesweeperView);
 
-    void initObserver();
+    void initMinesweeperView();
 
     void openNotFlaggedNeighbours(int x, int y);
 
-    void showCustomSettings();
-
-    void showHighScores();
+    Map<DifficultyMode, Score> getHighScores();
 
     void writeNewHighScore(String text);
 
     void resetHighScores();
 
-    void hideCustomSettingsInput();
-
     void exitGame();
 
     void setTime(long timeSpent);
 
+    DifficultyMode getCurrentDifficultyMode();
 }

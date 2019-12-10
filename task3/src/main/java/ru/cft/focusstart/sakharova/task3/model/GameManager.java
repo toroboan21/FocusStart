@@ -1,107 +1,71 @@
 package ru.cft.focusstart.sakharova.task3.model;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import ru.cft.focusstart.sakharova.task3.common.CellContent;
-import ru.cft.focusstart.sakharova.task3.common.CellState;
-import ru.cft.focusstart.sakharova.task3.common.DifficultyMode;
-import ru.cft.focusstart.sakharova.task3.common.Observer;
-import ru.cft.focusstart.sakharova.task3.model.highscores.HighScoresStorage;
+import ru.cft.focusstart.sakharova.task3.common.*;
+import ru.cft.focusstart.sakharova.task3.storage.HighScoresStorage;
 
 import java.util.*;
 
-@RequiredArgsConstructor
 public class GameManager implements Model {
-    private static final DifficultyMode defaultDifficulty = DifficultyMode.BEGINNER;
     private static final int MILLIS_IN_SECOND = 1000;
 
-    private final HighScoresStorage highScoresStorage;
-    private Observer observer;
-    private FlagsMap flagsMap;
-    private MinesMap minesMap;
-    private Cell[][] playingField;
+    private final HighScoresManager highScoresManager;
+    private MinesweeperView minesweeperView;
+    private PlayingField playingField;
     private Random randomCoordinatesGenerator;
 
-    private int rowsNumber;
-    private int columnsNumber;
-    private int minesNumber;
     private int openedCellsToWinNumber;
     private int openedCellsNumber;
     private long timeSpentInSeconds;
 
     private DifficultyMode difficultyMode;
-    private HashMap<Integer, CellContent> cellContentMap;
 
     @Getter
     private GameState gameState;
     @Getter
     private boolean isFirstStep;
 
+    public GameManager(HighScoresStorage highScoresStorage) {
+        highScoresManager = new HighScoresManager(highScoresStorage);
+    }
+
     @Override
-    public void setObserver(Observer observer) {
-        this.observer = observer;
+    public void setMinesweeperView(MinesweeperView minesweeperView) {
+        this.minesweeperView = minesweeperView;
     }
 
 
     @Override
-    public void initObserver() {
-        observer.init(rowsNumber, columnsNumber);
-        flagsMap.showRemainingBombsNumber(minesNumber);
+    public void initMinesweeperView() {
+        minesweeperView.init(playingField.getRowsNumber(), playingField.getColumnsNumber());
+        playingField.setRemainingBombsNumber(playingField.getMinesNumber());
     }
 
     @Override
-    public void init() {
-        this.difficultyMode = defaultDifficulty;
+    public void prepareGame() {
+        this.difficultyMode = DifficultyMode.getDefault();
         randomCoordinatesGenerator = new Random();
         prepareGameData(difficultyMode.getRowsNumber(), difficultyMode.getColumnsNumber(), difficultyMode.getMinesNumber());
-        fillCellContentMap();
     }
 
     private void prepareGameData(int rowsNumber, int columnsNumber, int minesNumber) {
-        this.rowsNumber = rowsNumber;
-        this.columnsNumber = columnsNumber;
-        this.minesNumber = minesNumber;
-
         openedCellsToWinNumber = (rowsNumber * columnsNumber) - minesNumber;
         openedCellsNumber = 0;
 
-        playingField = new Cell[rowsNumber][columnsNumber];
-        flagsMap = new FlagsMap(minesNumber, observer);
-        minesMap = new MinesMap(minesNumber, observer);
+        playingField = new PlayingField(rowsNumber, columnsNumber, minesNumber, minesweeperView);
 
         isFirstStep = true;
 
-        createPlayingField();
+        initPlayingField();
     }
 
-    private void createPlayingField() {
-        for (int x = 0; x < rowsNumber; x++) {
-            for (int y = 0; y < columnsNumber; y++) {
-                playingField[x][y] = new Cell(x, y, CellState.CLOSED, CellContent.EMPTY);
-            }
-        }
-    }
-
-    private void fillCellContentMap() {
-        cellContentMap = new HashMap<>();
-        cellContentMap.put(0, CellContent.EMPTY);
-        cellContentMap.put(1, CellContent.ONE_MINE_NEARBY);
-        cellContentMap.put(2, CellContent.TWO_MINE_NEARBY);
-        cellContentMap.put(3, CellContent.THREE_MINE_NEARBY);
-        cellContentMap.put(4, CellContent.FOUR_MINE_NEARBY);
-        cellContentMap.put(5, CellContent.FIVE_MINE_NEARBY);
-        cellContentMap.put(6, CellContent.SIX_MINE_NEARBY);
-        cellContentMap.put(7, CellContent.SEVEN_MINE_NEARBY);
-        cellContentMap.put(8, CellContent.EIGHT_MINE_NEARBY);
-    }
-
-    private CellContent getContentByMinesNumbers(int minesAroundNumber) {
-        return cellContentMap.get(minesAroundNumber);
+    private void initPlayingField() {
+        playingField.init();
     }
 
     @Override
     public void setFlag(int x, int y) {
-        flagsMap.setFlag(playingField[x][y]);
+        playingField.setFlag(playingField.getCell(x, y));
     }
 
     @Override
@@ -109,11 +73,11 @@ public class GameManager implements Model {
         if (isFirstStep()) {
             startGame(x, y);
         }
-        Cell currentCell = playingField[x][y];
+        Cell currentCell = playingField.getCell(x, y);
 
         if (getGameState() == GameState.IS_ON && currentCell.getCellState() == CellState.CLOSED) {
             if (currentCell.getCellContent() == CellContent.MINE) {
-                observer.showCellContent(currentCell.getX(), currentCell.getY(), currentCell.getCellContent());
+                minesweeperView.showCellContent(currentCell.getX(), currentCell.getY(), currentCell.getCellContent());
                 stopGameAfterDefeat(currentCell);
             } else {
                 openCellAndNeighbours(currentCell);
@@ -128,55 +92,24 @@ public class GameManager implements Model {
     @Override
     public void startGame(int x, int y) {
         isFirstStep = false;
-        Cell firstStepCell = playingField[x][y];
+        Cell firstStepCell = playingField.getCell(x, y);
         locateMines(firstStepCell);
         gameState = GameState.IS_ON;
-        observer.processGameStart();
+        minesweeperView.startGame();
     }
 
     private void locateMines(Cell firstStepCell) {
-        int counter = minesNumber;
+        int counter = playingField.getMinesNumber();
+        List<Cell> cellsListCopy = playingField.getCellsListCopy();
+        cellsListCopy.remove(firstStepCell);
         while (counter > 0) {
-            int x = randomCoordinatesGenerator.nextInt(rowsNumber);
-            int y = randomCoordinatesGenerator.nextInt(columnsNumber);
-            Cell currentCell = playingField[x][y];
+            int index = randomCoordinatesGenerator.nextInt(cellsListCopy.size());
+            Cell currentCell = cellsListCopy.remove(index);
 
-            if (currentCell.getCellContent() != CellContent.MINE && !currentCell.equals(firstStepCell)) {
-                currentCell.setCellContent(CellContent.MINE);
-                increaseMinesAroundNumber(currentCell);
-
-                minesMap.addMine(currentCell);
-                --counter;
-            }
+            currentCell.setCellContent(CellContent.MINE);
+            playingField.addMine(currentCell);
+            counter--;
         }
-    }
-
-    private void increaseMinesAroundNumber(Cell cell) {
-        List<Cell> neighbours = getCellNeighbours(cell);
-        neighbours.stream().filter(neighbour -> neighbour.getCellContent() != CellContent.MINE).
-                forEach(neighbour -> {
-                    neighbour.increaseMinesAroundNumber();
-                    neighbour.setCellContent(getContentByMinesNumbers(neighbour.getMinesAroundNumber()));
-                });
-    }
-
-    private List<Cell> getCellNeighbours(Cell cell) {
-        List<Cell> neighbours = new ArrayList<>();
-
-        int rowNumber = cell.getX();
-        int columnNumber = cell.getY();
-
-        for (int x = rowNumber - 1; x <= rowNumber + 1; ++x) {
-            for (int y = columnNumber - 1; y <= columnNumber + 1; ++y) {
-                if (isPlayingFieldContainsThisCell(x, y)) {
-                    if (x == rowNumber && y == columnNumber) {
-                        continue;
-                    }
-                    neighbours.add(playingField[x][y]);
-                }
-            }
-        }
-        return neighbours;
     }
 
     private boolean isGameWon() {
@@ -195,7 +128,7 @@ public class GameManager implements Model {
                     currentCell.getCellState() == CellState.CLOSED &&
                     currentCell.getCellContent() != CellContent.MINE) {
                 currentCell.setCellState(CellState.OPENED);
-                observer.showCellContent(currentCell.getX(), currentCell.getY(), currentCell.getCellContent());
+                minesweeperView.showCellContent(currentCell.getX(), currentCell.getY(), currentCell.getCellContent());
                 ++openedCellsNumber;
                 tryAddNeighboursToDeque(deque, currentCell);
             }
@@ -204,45 +137,43 @@ public class GameManager implements Model {
 
     private void tryAddNeighboursToDeque(Deque<Cell> deque, Cell currentCell) {
         if (currentCell.getCellContent() == CellContent.EMPTY) {
-            List<Cell> neighbours = getCellNeighbours(currentCell);
-            neighbours.stream().filter(neighbour -> !deque.contains(neighbour)).forEach(deque::addLast);
+            List<Cell> neighbours = playingField.getCellNeighbours(currentCell);
+            neighbours.stream()
+                    .filter(neighbour -> !deque.contains(neighbour))
+                    .forEach(deque::addLast);
         }
-    }
-
-    private boolean isPlayingFieldContainsThisCell(int x, int y) {
-        return x >= 0 && x < rowsNumber && y >= 0 && y < columnsNumber;
     }
 
     private void stopGameAfterVictory() {
         gameState = GameState.VICTORY;
-        flagsMap.markAllMinesAfterVictory(minesMap.getMinedCells());
+        playingField.markAllMinesAfterVictory(playingField.getMinedCells());
         stopTimerAndBlockCells();
 
         if (difficultyMode != DifficultyMode.CUSTOM &&
-                highScoresStorage.isHighScore(timeSpentInSeconds, difficultyMode)) {
-            observer.notifyPlayerAboutRecord();
+                highScoresManager.isHighScore(timeSpentInSeconds, difficultyMode)) {
+            highScoresManager.setCurrentBestTime(timeSpentInSeconds);
+            minesweeperView.notifyPlayerAboutRecord();
         }
     }
 
     private void stopTimerAndBlockCells() {
-        observer.finishGame(isGameWon());
+        minesweeperView.finishGame(isGameWon());
     }
 
     private void stopGameAfterDefeat(Cell detonatedCell) {
         gameState = GameState.WASTED;
-        minesMap.openNotFlaggedMinesAfterDetonation(detonatedCell);
-        flagsMap.openMistakenFlags();
+        playingField.processGameStop(detonatedCell);
         stopTimerAndBlockCells();
     }
 
     @Override
     public void openNotFlaggedNeighbours(int x, int y) {
         if (getGameState() == GameState.IS_ON) {
-            Cell currentCell = playingField[x][y];
+            Cell currentCell = playingField.getCell(x, y);
             if (currentCell.getCellState() != CellState.OPENED || currentCell.getCellContent() == CellContent.EMPTY) {
                 return;
             }
-            List<Cell> neighbours = getCellNeighbours(currentCell);
+            List<Cell> neighbours = playingField.getCellNeighbours(currentCell);
             int flaggedNeighboursNumber = 0;
 
             for (Cell neighbour : neighbours) {
@@ -260,13 +191,13 @@ public class GameManager implements Model {
 
     private void prepareGameAfterRestart(int rowsNumber, int columnsNumber, int minesNumber) {
         prepareGameData(rowsNumber, columnsNumber, minesNumber);
-        flagsMap.showRemainingBombsNumber(minesNumber);
+        playingField.setRemainingBombsNumber(minesNumber);
     }
 
     @Override
     public void restartGame() {
-        prepareGameAfterRestart(rowsNumber, columnsNumber, minesNumber);
-        observer.restartGame();
+        prepareGameAfterRestart(playingField.getRowsNumber(), playingField.getColumnsNumber(), playingField.getMinesNumber());
+        minesweeperView.restartGame();
     }
 
     @Override
@@ -280,7 +211,8 @@ public class GameManager implements Model {
 
         prepareGameAfterRestart(validateRowsNumber, validateColumnsNumber, validateMinesNumber);
 
-        observer.restartGameWithNewDifficulty(validateRowsNumber, validateColumnsNumber);
+        minesweeperView.hideCustomSettingsInput();
+        minesweeperView.restartGameWithNewDifficulty(validateRowsNumber, validateColumnsNumber);
     }
 
     @Override
@@ -288,44 +220,40 @@ public class GameManager implements Model {
         difficultyMode = newDifficultyMode;
         prepareGameAfterRestart(difficultyMode.getRowsNumber(), difficultyMode.getColumnsNumber(),
                 difficultyMode.getMinesNumber());
-        observer.restartGameWithNewDifficulty(newDifficultyMode.getRowsNumber(), newDifficultyMode.getColumnsNumber());
+        minesweeperView.restartGameWithNewDifficulty(newDifficultyMode.getRowsNumber(), newDifficultyMode.getColumnsNumber());
     }
 
     @Override
-    public void showCustomSettings() {
-        observer.showCustomSettings(rowsNumber, columnsNumber, minesNumber);
-    }
-
-    public void showHighScores() {
-        observer.showHighScores(highScoresStorage.getHighScores());
+    public Map<DifficultyMode, Score> getHighScores() {
+        return highScoresManager.getHighScores();
     }
 
     @Override
     public void writeNewHighScore(String name) {
-        highScoresStorage.writeNewHighScore(name, difficultyMode);
-        observer.hideHighScoreNotification();
+        highScoresManager.createNewHighScore(name, difficultyMode);
+        minesweeperView.hideHighScoreNotification();
     }
 
     @Override
     public void resetHighScores() {
-        highScoresStorage.resetHighScores();
-        observer.showHighScores(highScoresStorage.getHighScores());
-    }
-
-    @Override
-    public void hideCustomSettingsInput() {
-        observer.hideCustomSettingsInput();
+        highScoresManager.resetHighScores();
+        minesweeperView.showHighScores(highScoresManager.getHighScores());
     }
 
     @Override
     public void setTime(long timeSpent) {
         this.timeSpentInSeconds = timeSpent / MILLIS_IN_SECOND;
-        observer.modifyTimer(timeSpent);
+        minesweeperView.modifyTimer(timeSpent);
+    }
+
+    @Override
+    public DifficultyMode getCurrentDifficultyMode() {
+        return difficultyMode;
     }
 
     @Override
     public void exitGame() {
-        highScoresStorage.saveBeforeExit();
-        observer.exitGame();
+        highScoresManager.saveBeforeExit();
+        minesweeperView.exitGame();
     }
 }

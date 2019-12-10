@@ -1,6 +1,6 @@
 package ru.cft.focusstart.sakharova.task3.view.menu;
 
-import ru.cft.focusstart.sakharova.task3.controller.Controller;
+import ru.cft.focusstart.sakharova.task3.view.ListenerCreator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,7 @@ public class CustomMode {
     private final JFrame customModeFrame;
     private final GridBagConstraints constraints;
 
-    public CustomMode(Controller controller) {
+    public CustomMode(ListenerCreator listenerCreator) {
         customModeFrame = new JFrame();
 
         JLabel minefieldHeight = new JLabel("Высота: ");
@@ -29,7 +29,7 @@ public class CustomMode {
 
         JButton okButton = new JButton("Принять");
 
-        okButton.addActionListener(controller.createListenerForCustomSettings
+        okButton.addActionListener(listenerCreator.createListenerForCustomSettings
                 (rowsNumberText, columnsNumberText, minesNumberText));
 
         GridBagLayout layout = new GridBagLayout();
@@ -84,6 +84,7 @@ public class CustomMode {
     }
 
     public void hide() {
+        customModeFrame.setVisible(false);
         customModeFrame.dispose();
     }
 }

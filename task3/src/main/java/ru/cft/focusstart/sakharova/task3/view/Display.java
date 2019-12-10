@@ -1,7 +1,6 @@
 package ru.cft.focusstart.sakharova.task3.view;
 
 import lombok.Getter;
-import ru.cft.focusstart.sakharova.task3.controller.Controller;
 import ru.cft.focusstart.sakharova.task3.view.iconsmanager.IconsManager;
 
 import javax.swing.*;
@@ -22,10 +21,10 @@ class Display {
     private JLabel remainingBombs;
     @Getter
     private JPanel displayPanel;
-    private Controller controller;
+    private ListenerCreator listenerCreator;
 
-    Display(Controller controller) {
-        this.controller = controller;
+    Display(ListenerCreator listenerCreator) {
+        this.listenerCreator = listenerCreator;
         displayPanel = new JPanel();
         createDisplay();
         this.simpleDateFormat = new SimpleDateFormat(TIMER_FORMAT);
@@ -46,7 +45,7 @@ class Display {
         restartButton.setPreferredSize(displayElementSize);
         restartButton.setHorizontalAlignment(SwingConstants.CENTER);
         restartButton.setFocusPainted(false);
-        restartButton.addActionListener(controller.createListenerForRestartButton());
+        restartButton.addActionListener(listenerCreator.createListenerForRestartButton());
 
         JLabel remainingBombsIcon = new JLabel();
         remainingBombsIcon.setIcon(IconsManager.getRemainingBombs());

@@ -16,4 +16,8 @@ public enum DifficultyMode {
     private final int columnsNumber;
     private final int minesNumber;
     private final String name;
+
+    public static DifficultyMode getDefault() {
+        return BEGINNER;
+    }
 }

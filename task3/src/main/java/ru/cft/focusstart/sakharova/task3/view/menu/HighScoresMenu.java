@@ -2,14 +2,14 @@ package ru.cft.focusstart.sakharova.task3.view.menu;
 
 import ru.cft.focusstart.sakharova.task3.common.DifficultyMode;
 import ru.cft.focusstart.sakharova.task3.common.Score;
-import ru.cft.focusstart.sakharova.task3.controller.Controller;
+import ru.cft.focusstart.sakharova.task3.view.ListenerCreator;
 import ru.cft.focusstart.sakharova.task3.view.iconsmanager.IconsManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
-public class HighScores {
+public class HighScoresMenu {
     private static final String NOTIFY_TEXT = "Вы справились быстрее остальных! Введите свое имя:";
 
     private JFrame highScoresFrame;
@@ -25,10 +25,10 @@ public class HighScores {
     private JLabel expertModeResult;
     private JLabel expertModeRecordsMan;
 
-    private Controller controller;
+    private ListenerCreator listenerCreator;
 
-    public HighScores(Controller controller) {
-        this.controller = controller;
+    public HighScoresMenu(ListenerCreator listenerCreator) {
+        this.listenerCreator = listenerCreator;
         highScoresFrameConstraints = new GridBagConstraints();
         setDefaultConstraintsValues();
         createHighScoresFrame();
@@ -42,7 +42,7 @@ public class HighScores {
         JTextField fieldForName = new JTextField();
         JButton notifyOkButton = new JButton("Принять");
 
-        notifyOkButton.addActionListener(controller.createListenerForRecordsManNameApply(fieldForName));
+        notifyOkButton.addActionListener(listenerCreator.createListenerForRecordsManNameApply(fieldForName));
 
         GridBagLayout layout = new GridBagLayout();
         notifyFrame.setLayout(layout);
@@ -81,7 +81,7 @@ public class HighScores {
         expertModeRecordsMan = new JLabel();
 
         JButton resetHighScoresButton = new JButton("Сбросить результаты");
-        resetHighScoresButton.addActionListener(controller.createListenerForResetHighScoresButton());
+        resetHighScoresButton.addActionListener(listenerCreator.createListenerForResetHighScoresButton());
 
         GridBagLayout layout = new GridBagLayout();
 

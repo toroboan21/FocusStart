@@ -7,11 +7,12 @@ import ru.cft.focusstart.sakharova.task3.common.CellState;
 
 import javax.swing.*;
 import java.util.EnumMap;
+import java.util.Map;
 
 @UtilityClass
 public class IconsManager {
-    private static final EnumMap<CellContent, Icon> cellContentIcons;
-    private static final EnumMap<CellState, Icon> cellStateIcons;
+    private static final Map<CellContent, Icon> cellContentIcons;
+    private static final Map<CellState, Icon> cellStateIcons;
 
     @Getter
     private static final ImageIcon gameIcon;

@@ -32,18 +32,18 @@ class CustomSettingsUtils {
         return columnsNumber;
     }
 
-    static int fitMinesNumber(int rowsNumber, int columnNumbers, int minesNumber) {
-        if (minesNumber < MIN_MINES_NUMBER) {
+    static int fitMinesNumber(int validatedRowsNumber, int validatedColumnNumbers, int validatedMinesNumber) {
+        if (validatedMinesNumber < MIN_MINES_NUMBER) {
             return MIN_MINES_NUMBER;
         }
 
-        int maxMinesNumber = countMaxMinesNumber(rowsNumber, columnNumbers);
+        int maxMinesNumber = countMaxMinesNumber(validatedRowsNumber, validatedColumnNumbers);
 
-        if (minesNumber > maxMinesNumber) {
+        if (validatedMinesNumber > maxMinesNumber) {
             return maxMinesNumber;
         }
 
-        return minesNumber;
+        return validatedMinesNumber;
     }
 
     private static int countMaxMinesNumber(int rowsNumber, int columnNumbers) {

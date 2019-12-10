@@ -4,25 +4,27 @@ import ru.cft.focusstart.sakharova.task3.common.*;
 import ru.cft.focusstart.sakharova.task3.controller.Controller;
 import ru.cft.focusstart.sakharova.task3.view.iconsmanager.IconsManager;
 import ru.cft.focusstart.sakharova.task3.view.menu.CustomMode;
-import ru.cft.focusstart.sakharova.task3.view.menu.HighScores;
+import ru.cft.focusstart.sakharova.task3.view.menu.HighScoresMenu;
 import ru.cft.focusstart.sakharova.task3.view.menu.Menu;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
-public class SwingView implements Observer {
+public class MinesweeperSwingView implements MinesweeperView {
 
     private JFrame mainFrame;
     private Display display;
     private Minefield minefield;
-    private HighScores highScoresFrame;
+    private HighScoresMenu highScoresMenu;
     private CustomMode customModeFrame;
 
     private final Controller controller;
+    private final ListenerCreator listenerCreator;
 
-    public SwingView(Controller controller) {
+    public MinesweeperSwingView(Controller controller) {
         this.controller = controller;
+        listenerCreator = new ListenerCreator(controller, this);
     }
 
     @Override
@@ -45,24 +47,24 @@ public class SwingView implements Observer {
     }
 
     @Override
-    public void processGameStart() {
+    public void startGame() {
         controller.startTimer();
     }
 
     private void createMinefield(int rowsNumber, int columnsNumber) {
-        minefield = new Minefield(rowsNumber, columnsNumber, controller);
+        minefield = new Minefield(rowsNumber, columnsNumber, listenerCreator);
         mainFrame.add(minefield.getPlayingField(), BorderLayout.CENTER);
     }
 
     private void createMenu() {
-        Menu menu = new Menu(controller);
+        Menu menu = new Menu(listenerCreator);
         mainFrame.setJMenuBar(menu.getMenuBar());
-        customModeFrame = new CustomMode(controller);
-        highScoresFrame = new HighScores(controller);
+        customModeFrame = new CustomMode(listenerCreator);
+        highScoresMenu = new HighScoresMenu(listenerCreator);
     }
 
     private void createDisplay() {
-        display = new Display(controller);
+        display = new Display(listenerCreator);
         mainFrame.add(display.getDisplayPanel(), BorderLayout.SOUTH);
     }
 
@@ -116,22 +118,23 @@ public class SwingView implements Observer {
 
     @Override
     public void notifyPlayerAboutRecord() {
-        highScoresFrame.notifyPlayerAboutRecord();
+        highScoresMenu.notifyPlayerAboutRecord();
     }
 
     @Override
-    public void showCustomSettings(int rowsNumber, int columnsNumber, int minesNumber) {
-        customModeFrame.show(rowsNumber, columnsNumber, minesNumber);
+    public void showCustomSettings(DifficultyMode difficultyMode) {
+        customModeFrame.show
+                (difficultyMode.getRowsNumber(), difficultyMode.getColumnsNumber(), difficultyMode.getMinesNumber());
     }
 
     @Override
     public void showHighScores(Map<DifficultyMode, Score> highScores) {
-        highScoresFrame.showHighScoresFrame(highScores);
+        highScoresMenu.showHighScoresFrame(highScores);
     }
 
     @Override
     public void hideHighScoreNotification() {
-        highScoresFrame.hideNotifyFrame();
+        highScoresMenu.hideNotifyFrame();
     }
 
     @Override

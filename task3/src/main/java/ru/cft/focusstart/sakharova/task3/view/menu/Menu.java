@@ -2,18 +2,18 @@ package ru.cft.focusstart.sakharova.task3.view.menu;
 
 import lombok.Getter;
 import ru.cft.focusstart.sakharova.task3.common.DifficultyMode;
-import ru.cft.focusstart.sakharova.task3.controller.Controller;
 import ru.cft.focusstart.sakharova.task3.controller.MenuCommands;
+import ru.cft.focusstart.sakharova.task3.view.ListenerCreator;
 
 import javax.swing.*;
 
 public class Menu {
     @Getter
     private final JMenuBar menuBar;
-    private final Controller controller;
+    private final ListenerCreator listenerCreator;
 
-    public Menu(Controller controller) {
-        this.controller = controller;
+    public Menu(ListenerCreator listenerCreator) {
+        this.listenerCreator = listenerCreator;
         menuBar = new JMenuBar();
         createMenu();
     }
@@ -57,7 +57,7 @@ public class Menu {
     private void addActionListenerOnMenu(JMenu menu) {
         for (int i = 0; i < menu.getItemCount(); i++) {
             JMenuItem item = menu.getItem(i);
-            item.addActionListener(controller.createListenerForMenuButton());
+            item.addActionListener(listenerCreator.createListenerForMenuButton());
         }
     }
 }

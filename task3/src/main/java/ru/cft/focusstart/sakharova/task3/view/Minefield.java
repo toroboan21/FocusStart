@@ -3,7 +3,6 @@ package ru.cft.focusstart.sakharova.task3.view;
 import lombok.Getter;
 import ru.cft.focusstart.sakharova.task3.common.CellContent;
 import ru.cft.focusstart.sakharova.task3.common.CellState;
-import ru.cft.focusstart.sakharova.task3.controller.Controller;
 import ru.cft.focusstart.sakharova.task3.view.iconsmanager.IconsManager;
 
 import javax.swing.*;
@@ -17,10 +16,10 @@ class Minefield {
     private JButton[][] minesButtons;
     @Getter
     private final JPanel playingField;
-    private final Controller controller;
+    private final ListenerCreator listenerCreator;
 
-    Minefield(int rowsNumber, int columnsNumber, Controller controller) {
-        this.controller = controller;
+    Minefield(int rowsNumber, int columnsNumber, ListenerCreator listenerCreator) {
+        this.listenerCreator = listenerCreator;
         playingField = new JPanel();
         createField(rowsNumber, columnsNumber);
     }
@@ -37,7 +36,7 @@ class Minefield {
                 button.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
                 button.setContentAreaFilled(false);
                 button.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-                button.addMouseListener(controller.createListenerForPlayingField(x, y));
+                button.addMouseListener(listenerCreator.createListenerForPlayingField(x, y));
                 button.setFocusPainted(false);
 
                 playingField.add(button);

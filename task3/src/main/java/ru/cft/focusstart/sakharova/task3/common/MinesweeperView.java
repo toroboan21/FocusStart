@@ -1,11 +1,12 @@
 package ru.cft.focusstart.sakharova.task3.common;
 
+import ru.cft.focusstart.sakharova.task3.view.View;
+
 import java.util.Map;
 
-public interface Observer {
-    void init(int rowsNumber, int columnsNumber);
+public interface MinesweeperView extends View {
 
-    void processGameStart();
+    void startGame();
 
     void showCellContent(int x, int y, CellContent content);
 
@@ -23,7 +24,7 @@ public interface Observer {
 
     void notifyPlayerAboutRecord();
 
-    void showCustomSettings(int rowsNumber, int columnsNumber, int minesNumber);
+    void showCustomSettings(DifficultyMode difficultyMode);
 
     void showHighScores(Map<DifficultyMode, Score> highScores);
 
