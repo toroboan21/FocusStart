@@ -2,7 +2,7 @@ package ru.cft.focusstart.sakharova.task3.view;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.cft.focusstart.sakharova.task3.common.DifficultyMode;
+import ru.cft.focusstart.sakharova.task3.common.StandardDifficultyModes;
 import ru.cft.focusstart.sakharova.task3.controller.Controller;
 import ru.cft.focusstart.sakharova.task3.controller.MenuCommands;
 
@@ -15,8 +15,8 @@ import java.awt.event.MouseListener;
 @Slf4j
 @AllArgsConstructor
 public class ListenerCreator {
-    private Controller controller;
-    private MinesweeperSwingView swingView;
+    private final Controller controller;
+    private final MinesweeperSwingView swingView;
 
     MouseListener createListenerForPlayingField(int x, int y) {
         return new MouseAdapter() {
@@ -54,15 +54,15 @@ public class ListenerCreator {
                     break;
 
                 case SWITCH_TO_BEGINNER_MODE:
-                    controller.restartGameWithNewDifficulty(DifficultyMode.BEGINNER);
+                    controller.restartGameWithNewDifficulty(StandardDifficultyModes.BEGINNER);
                     break;
 
                 case SWITCH_TO_INTERMEDIATE_MODE:
-                    controller.restartGameWithNewDifficulty(DifficultyMode.INTERMEDIATE);
+                    controller.restartGameWithNewDifficulty(StandardDifficultyModes.INTERMEDIATE);
                     break;
 
                 case SWITCH_TO_EXPERT_MODE:
-                    controller.restartGameWithNewDifficulty(DifficultyMode.EXPERT);
+                    controller.restartGameWithNewDifficulty(StandardDifficultyModes.EXPERT);
                     break;
 
                 case SWITCH_TO_CUSTOM_MODE:

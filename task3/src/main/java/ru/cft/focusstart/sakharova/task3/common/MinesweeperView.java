@@ -26,7 +26,7 @@ public interface MinesweeperView extends View {
 
     void showCustomSettings(DifficultyMode difficultyMode);
 
-    void showHighScores(Map<DifficultyMode, Score> highScores);
+    void showHighScores(Map<String, Score> highScores);
 
     void hideHighScoreNotification();
 

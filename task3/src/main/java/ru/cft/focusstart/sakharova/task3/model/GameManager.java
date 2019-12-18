@@ -5,6 +5,7 @@ import ru.cft.focusstart.sakharova.task3.common.*;
 import ru.cft.focusstart.sakharova.task3.storage.HighScoresStorage;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class GameManager implements Model {
     private static final int MILLIS_IN_SECOND = 1000;
@@ -43,7 +44,7 @@ public class GameManager implements Model {
 
     @Override
     public void prepareGame() {
-        this.difficultyMode = DifficultyMode.getDefault();
+        this.difficultyMode = StandardDifficultyModes.getDefault().getDifficultyMode();
         randomCoordinatesGenerator = new Random();
         prepareGameData(difficultyMode.getRowsNumber(), difficultyMode.getColumnsNumber(), difficultyMode.getMinesNumber());
     }
@@ -139,7 +140,7 @@ public class GameManager implements Model {
         if (currentCell.getCellContent() == CellContent.EMPTY) {
             List<Cell> neighbours = playingField.getCellNeighbours(currentCell);
             neighbours.stream()
-                    .filter(neighbour -> !deque.contains(neighbour))
+                    .filter(Predicate.not(deque::contains))
                     .forEach(deque::addLast);
         }
     }
@@ -149,8 +150,7 @@ public class GameManager implements Model {
         playingField.markAllMinesAfterVictory(playingField.getMinedCells());
         stopTimerAndBlockCells();
 
-        if (difficultyMode != DifficultyMode.CUSTOM &&
-                highScoresManager.isHighScore(timeSpentInSeconds, difficultyMode)) {
+        if (difficultyMode.isCustomMode() && highScoresManager.isHighScore(timeSpentInSeconds, difficultyMode)) {
             highScoresManager.setCurrentBestTime(timeSpentInSeconds);
             minesweeperView.notifyPlayerAboutRecord();
         }
@@ -173,14 +173,11 @@ public class GameManager implements Model {
             if (currentCell.getCellState() != CellState.OPENED || currentCell.getCellContent() == CellContent.EMPTY) {
                 return;
             }
-            List<Cell> neighbours = playingField.getCellNeighbours(currentCell);
-            int flaggedNeighboursNumber = 0;
 
-            for (Cell neighbour : neighbours) {
-                if (neighbour.getCellState() == CellState.FLAGGED) {
-                    ++flaggedNeighboursNumber;
-                }
-            }
+            List<Cell> neighbours = playingField.getCellNeighbours(currentCell);
+            int flaggedNeighboursNumber = (int) neighbours.stream()
+                    .filter(neighbour -> CellState.FLAGGED == neighbour.getCellState())
+                    .count();
 
             int minesAroundCurrentCellNumber = currentCell.getMinesAroundNumber();
             if (minesAroundCurrentCellNumber == flaggedNeighboursNumber) {
@@ -202,12 +199,13 @@ public class GameManager implements Model {
 
     @Override
     public void restartGameWithCustomSettings(int rowsNumber, int columnsNumber, int minesNumber) {
-        difficultyMode = DifficultyMode.CUSTOM;
-
         int validateRowsNumber = CustomSettingsUtils.fitRowsNumber(rowsNumber);
         int validateColumnsNumber = CustomSettingsUtils.fitColumnsNumber(columnsNumber);
         int validateMinesNumber = CustomSettingsUtils.fitMinesNumber(validateRowsNumber, validateColumnsNumber,
                 minesNumber);
+
+        difficultyMode = new DifficultyMode(validateRowsNumber, validateColumnsNumber, validateMinesNumber,
+                true, DifficultyMode.CUSTOM_MODE_NAME);
 
         prepareGameAfterRestart(validateRowsNumber, validateColumnsNumber, validateMinesNumber);
 
@@ -216,15 +214,15 @@ public class GameManager implements Model {
     }
 
     @Override
-    public void restartGameWithNewDifficulty(DifficultyMode newDifficultyMode) {
-        difficultyMode = newDifficultyMode;
+    public void restartGameWithNewDifficulty(StandardDifficultyModes newDifficultyMode) {
+        difficultyMode = newDifficultyMode.getDifficultyMode();
         prepareGameAfterRestart(difficultyMode.getRowsNumber(), difficultyMode.getColumnsNumber(),
                 difficultyMode.getMinesNumber());
-        minesweeperView.restartGameWithNewDifficulty(newDifficultyMode.getRowsNumber(), newDifficultyMode.getColumnsNumber());
+        minesweeperView.restartGameWithNewDifficulty(difficultyMode.getRowsNumber(), difficultyMode.getColumnsNumber());
     }
 
     @Override
-    public Map<DifficultyMode, Score> getHighScores() {
+    public Map<String, Score> getHighScores() {
         return highScoresManager.getHighScores();
     }
 

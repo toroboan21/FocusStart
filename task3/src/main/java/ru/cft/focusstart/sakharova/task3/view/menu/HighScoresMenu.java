@@ -1,7 +1,7 @@
 package ru.cft.focusstart.sakharova.task3.view.menu;
 
-import ru.cft.focusstart.sakharova.task3.common.DifficultyMode;
 import ru.cft.focusstart.sakharova.task3.common.Score;
+import ru.cft.focusstart.sakharova.task3.common.StandardDifficultyModes;
 import ru.cft.focusstart.sakharova.task3.view.ListenerCreator;
 import ru.cft.focusstart.sakharova.task3.view.iconsmanager.IconsManager;
 
@@ -159,19 +159,19 @@ public class HighScoresMenu {
         notifyFrame.dispose();
     }
 
-    public void showHighScoresFrame(Map<DifficultyMode, Score> highScores) {
-        beginnerModeName.setText(DifficultyMode.BEGINNER.getName());
-        Score beginnerHighScore = highScores.get(DifficultyMode.BEGINNER);
+    public void showHighScoresFrame(Map<String, Score> highScores) {
+        beginnerModeName.setText(StandardDifficultyModes.BEGINNER.getDifficultyMode().getName());
+        Score beginnerHighScore = highScores.get(StandardDifficultyModes.BEGINNER.getDifficultyMode().getName());
         beginnerModeResult.setText(String.valueOf(beginnerHighScore.getTime()));
         beginnerModeRecordsMan.setText(beginnerHighScore.getName());
 
-        intermediateModeName.setText(DifficultyMode.INTERMEDIATE.getName());
-        Score intermediateHighScore = highScores.get(DifficultyMode.INTERMEDIATE);
+        intermediateModeName.setText(StandardDifficultyModes.INTERMEDIATE.getDifficultyMode().getName());
+        Score intermediateHighScore = highScores.get(StandardDifficultyModes.INTERMEDIATE.getDifficultyMode().getName());
         intermediateModeResult.setText(String.valueOf(intermediateHighScore.getTime()));
         intermediateModeRecordsMan.setText(intermediateHighScore.getName());
 
-        expertModeName.setText(DifficultyMode.EXPERT.getName());
-        Score expertHighScore = highScores.get(DifficultyMode.EXPERT);
+        expertModeName.setText(StandardDifficultyModes.EXPERT.getDifficultyMode().getName());
+        Score expertHighScore = highScores.get(StandardDifficultyModes.EXPERT.getDifficultyMode().getName());
         expertModeResult.setText(String.valueOf(expertHighScore.getTime()));
         expertModeRecordsMan.setText(expertHighScore.getName());
 

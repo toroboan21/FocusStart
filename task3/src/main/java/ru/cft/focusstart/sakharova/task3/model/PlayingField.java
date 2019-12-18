@@ -5,10 +5,7 @@ import ru.cft.focusstart.sakharova.task3.common.CellContent;
 import ru.cft.focusstart.sakharova.task3.common.CellState;
 import ru.cft.focusstart.sakharova.task3.common.MinesweeperView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 class PlayingField {
     private final MinesweeperView minesweeperView;
@@ -17,7 +14,7 @@ class PlayingField {
     private final List<Cell> flaggedCells;
 
     private Cell[][] cells;
-    private HashMap<Integer, CellContent> cellContentMap;
+    private Map<Integer, CellContent> cellContentMap;
     @Getter
     private int rowsNumber;
     @Getter
@@ -170,8 +167,7 @@ class PlayingField {
 
     private void openNotFlaggedMinesAfterDetonation(Cell detonatedCell) {
         detonatedCell.setCellContent(CellContent.DETONATED);
-        minedCells
-                .stream()
+        minedCells.stream()
                 .filter(mine -> mine.getCellState() != CellState.FLAGGED)
                 .forEach(mine -> {
                     mine.setCellState(CellState.OPENED);

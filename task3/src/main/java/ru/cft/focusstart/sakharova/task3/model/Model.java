@@ -3,6 +3,7 @@ package ru.cft.focusstart.sakharova.task3.model;
 import ru.cft.focusstart.sakharova.task3.common.DifficultyMode;
 import ru.cft.focusstart.sakharova.task3.common.MinesweeperView;
 import ru.cft.focusstart.sakharova.task3.common.Score;
+import ru.cft.focusstart.sakharova.task3.common.StandardDifficultyModes;
 
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public interface Model {
 
     void openCell(int x, int y);
 
-    void restartGameWithNewDifficulty(DifficultyMode difficultyMode);
+    void restartGameWithNewDifficulty(StandardDifficultyModes newDifficultyMode);
 
     void restartGame();
 
@@ -28,7 +29,7 @@ public interface Model {
 
     void openNotFlaggedNeighbours(int x, int y);
 
-    Map<DifficultyMode, Score> getHighScores();
+    Map<String, Score> getHighScores();
 
     void writeNewHighScore(String text);
 

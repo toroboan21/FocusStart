@@ -128,7 +128,7 @@ public class MinesweeperSwingView implements MinesweeperView {
     }
 
     @Override
-    public void showHighScores(Map<DifficultyMode, Score> highScores) {
+    public void showHighScores(Map<String, Score> highScores) {
         highScoresMenu.showHighScoresFrame(highScores);
     }
 

@@ -1,23 +1,23 @@
 package ru.cft.focusstart.sakharova.task3.common;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Getter
-public enum DifficultyMode {
-    BEGINNER(9, 9, 10, "Новичок"),
-    INTERMEDIATE(16, 16, 40, "Любитель"),
-    EXPERT(16, 30, 99, "Профессионал"),
-    CUSTOM(0, 0, 0, "Особый"),
-    ;
+public class DifficultyMode {
+
+    public static final String CUSTOM_MODE_NAME = "Особый";
 
     private final int rowsNumber;
     private final int columnsNumber;
     private final int minesNumber;
+    private final boolean isCustomMode;
     private final String name;
 
-    public static DifficultyMode getDefault() {
-        return BEGINNER;
+    public DifficultyMode(int rowsNumber, int columnsNumber, int minesNumber, boolean isCustomMode, String name) {
+        this.rowsNumber = rowsNumber;
+        this.columnsNumber = columnsNumber;
+        this.minesNumber = minesNumber;
+        this.isCustomMode = isCustomMode;
+        this.name = name;
     }
 }

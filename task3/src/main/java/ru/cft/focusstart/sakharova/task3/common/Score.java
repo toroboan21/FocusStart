@@ -8,6 +8,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 public class Score implements Serializable {
-    private String name;
-    private long time;
+    private final String name;
+    private final long time;
 }

@@ -2,6 +2,7 @@ package ru.cft.focusstart.sakharova.task3.view.menu;
 
 import lombok.Getter;
 import ru.cft.focusstart.sakharova.task3.common.DifficultyMode;
+import ru.cft.focusstart.sakharova.task3.common.StandardDifficultyModes;
 import ru.cft.focusstart.sakharova.task3.controller.MenuCommands;
 import ru.cft.focusstart.sakharova.task3.view.ListenerCreator;
 
@@ -23,16 +24,16 @@ public class Menu {
         JMenuItem newGame = new JMenuItem("Новая игра");
         newGame.setActionCommand(MenuCommands.RESTART.name());
 
-        JMenuItem beginnerMode = new JMenuItem(DifficultyMode.BEGINNER.getName());
+        JMenuItem beginnerMode = new JMenuItem(StandardDifficultyModes.BEGINNER.getDifficultyMode().getName());
         beginnerMode.setActionCommand(MenuCommands.SWITCH_TO_BEGINNER_MODE.name());
 
-        JMenuItem intermediateMode = new JMenuItem(DifficultyMode.INTERMEDIATE.getName());
+        JMenuItem intermediateMode = new JMenuItem(StandardDifficultyModes.INTERMEDIATE.getDifficultyMode().getName());
         intermediateMode.setActionCommand(MenuCommands.SWITCH_TO_INTERMEDIATE_MODE.name());
 
-        JMenuItem expertMode = new JMenuItem(DifficultyMode.EXPERT.getName());
+        JMenuItem expertMode = new JMenuItem(StandardDifficultyModes.EXPERT.getDifficultyMode().getName());
         expertMode.setActionCommand(MenuCommands.SWITCH_TO_EXPERT_MODE.name());
 
-        JMenuItem customMode = new JMenuItem(DifficultyMode.CUSTOM.getName());
+        JMenuItem customMode = new JMenuItem(DifficultyMode.CUSTOM_MODE_NAME);
         customMode.setActionCommand(MenuCommands.SWITCH_TO_CUSTOM_MODE.name());
 
         JMenuItem highScores = new JMenuItem("Таблица рекордов");

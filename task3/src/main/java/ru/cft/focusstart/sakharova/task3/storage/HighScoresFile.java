@@ -1,7 +1,6 @@
 package ru.cft.focusstart.sakharova.task3.storage;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.cft.focusstart.sakharova.task3.common.DifficultyMode;
 import ru.cft.focusstart.sakharova.task3.common.Score;
 
 import java.io.*;
@@ -20,7 +19,7 @@ public class HighScoresFile implements HighScoresStorage {
     }
 
     @Override
-    public void updateHighScoresFile(Map<DifficultyMode, Score> highScores) {
+    public void updateHighScoresFile(Map<String, Score> highScores) {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(HIGH_SCORES_FILE_PATH))) {
             outputStream.writeObject(highScores);
         } catch (IOException e) {

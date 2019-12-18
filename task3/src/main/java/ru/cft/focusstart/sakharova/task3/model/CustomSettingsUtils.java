@@ -4,32 +4,30 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 class CustomSettingsUtils {
-    private static final int MIN_ROWS_NUMBER = 9;
-    private static final int MAX_ROWS_NUMBER = 24;
+    private final int MIN_ROWS_NUMBER = 9;
+    private final int MAX_ROWS_NUMBER = 24;
 
-    private static final int MIN_COLUMNS_NUMBER = 9;
-    private static final int MAX_COLUMNS_NUMBER = 30;
+    private final int MIN_COLUMNS_NUMBER = 9;
+    private final int MAX_COLUMNS_NUMBER = 30;
 
-    private static final int MIN_MINES_NUMBER = 10;
+    private final int MIN_MINES_NUMBER = 10;
 
     static int fitRowsNumber(int rowsNumber) {
-        if (rowsNumber < MIN_ROWS_NUMBER) {
-            return MIN_ROWS_NUMBER;
-        }
-        if (rowsNumber > MAX_ROWS_NUMBER) {
-            return MAX_ROWS_NUMBER;
-        }
-        return rowsNumber;
+        return fitUserInputNumber(rowsNumber, MIN_ROWS_NUMBER, MAX_ROWS_NUMBER);
     }
 
     static int fitColumnsNumber(int columnsNumber) {
-        if (columnsNumber < MIN_COLUMNS_NUMBER) {
-            return MIN_COLUMNS_NUMBER;
+        return fitUserInputNumber(columnsNumber, MIN_COLUMNS_NUMBER, MAX_COLUMNS_NUMBER);
+    }
+
+    private static int fitUserInputNumber(int userInputNumber, int minNumber, int maxNumber) {
+        if (userInputNumber < minNumber) {
+            return minNumber;
         }
-        if (columnsNumber > MAX_COLUMNS_NUMBER) {
-            return MAX_COLUMNS_NUMBER;
+        if (userInputNumber > maxNumber) {
+            return maxNumber;
         }
-        return columnsNumber;
+        return userInputNumber;
     }
 
     static int fitMinesNumber(int validatedRowsNumber, int validatedColumnNumbers, int validatedMinesNumber) {

@@ -1,7 +1,6 @@
 package ru.cft.focusstart.sakharova.task3.view.iconsmanager;
 
 import lombok.Getter;
-import lombok.experimental.UtilityClass;
 import ru.cft.focusstart.sakharova.task3.common.CellContent;
 import ru.cft.focusstart.sakharova.task3.common.CellState;
 
@@ -9,7 +8,6 @@ import javax.swing.*;
 import java.util.EnumMap;
 import java.util.Map;
 
-@UtilityClass
 public class IconsManager {
     private static final Map<CellContent, Icon> cellContentIcons;
     private static final Map<CellState, Icon> cellStateIcons;

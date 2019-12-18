@@ -3,6 +3,7 @@ package ru.cft.focusstart.sakharova.task3.controller;
 import lombok.extern.slf4j.Slf4j;
 import ru.cft.focusstart.sakharova.task3.common.DifficultyMode;
 import ru.cft.focusstart.sakharova.task3.common.Score;
+import ru.cft.focusstart.sakharova.task3.common.StandardDifficultyModes;
 import ru.cft.focusstart.sakharova.task3.model.Model;
 
 import java.util.Map;
@@ -45,7 +46,7 @@ public class Controller {
         model.restartGame();
     }
 
-    public void restartGameWithNewDifficulty(DifficultyMode difficultyMode) {
+    public void restartGameWithNewDifficulty(StandardDifficultyModes difficultyMode) {
         model.restartGameWithNewDifficulty(difficultyMode);
     }
 
@@ -62,7 +63,7 @@ public class Controller {
         }
     }
 
-    public Map<DifficultyMode, Score> getHighScores() {
+    public Map<String, Score> getHighScores() {
         return model.getHighScores();
     }
 
