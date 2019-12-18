@@ -8,8 +8,8 @@ import java.util.concurrent.Callable;
 @Slf4j
 @AllArgsConstructor
 public class Task implements Callable<Double> {
-    private int firstNumber;
-    private int lastNumber;
+    private final int firstNumber;
+    private final int lastNumber;
 
     private double calculateFunction(int x) {
         return Math.pow(Math.cos(Math.pow(Math.sin(x), 2)), 2);

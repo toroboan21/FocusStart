@@ -12,7 +12,7 @@ import java.util.concurrent.Future;
 @Slf4j
 public class Main {
     private static final int INTERVAL_START = 1;
-    private static final int INTERVAL_FINISH = 300000000;
+    private static final int INTERVAL_FINISH = 300_000_000;
     private static final int THREAD_NUMBER = 20;
 
     public static void main(String[] args) {
