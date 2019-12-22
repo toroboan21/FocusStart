@@ -1,7 +1,6 @@
 package ru.cft.focusstart.sakharova;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.cft.focusstart.sakharova.task.Task;
 
 import java.util.ArrayList;
 import java.util.List;

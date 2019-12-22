@@ -150,7 +150,7 @@ public class GameManager implements Model {
         playingField.markAllMinesAfterVictory(playingField.getMinedCells());
         stopTimerAndBlockCells();
 
-        if (difficultyMode.isCustomMode() && highScoresManager.isHighScore(timeSpentInSeconds, difficultyMode)) {
+        if (!difficultyMode.isCustomMode() && highScoresManager.isHighScore(timeSpentInSeconds, difficultyMode)) {
             highScoresManager.setCurrentBestTime(timeSpentInSeconds);
             minesweeperView.notifyPlayerAboutRecord();
         }
