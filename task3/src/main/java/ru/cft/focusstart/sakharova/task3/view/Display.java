@@ -15,13 +15,13 @@ class Display {
     private static final int DISPLAY_ELEMENT_HEIGHT = 30;
     private static final Dimension displayElementSize = new Dimension(DISPLAY_ELEMENT_WIDTH, DISPLAY_ELEMENT_HEIGHT);
     private final SimpleDateFormat simpleDateFormat;
+    private final ListenerCreator listenerCreator;
 
     private JButton restartButton;
     private JLabel timer;
     private JLabel remainingBombs;
     @Getter
     private JPanel displayPanel;
-    private ListenerCreator listenerCreator;
 
     Display(ListenerCreator listenerCreator) {
         this.listenerCreator = listenerCreator;

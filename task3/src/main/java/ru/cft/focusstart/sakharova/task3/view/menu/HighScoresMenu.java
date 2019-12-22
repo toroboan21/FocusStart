@@ -12,8 +12,10 @@ import java.util.Map;
 public class HighScoresMenu {
     private static final String NOTIFY_TEXT = "Вы справились быстрее остальных! Введите свое имя:";
 
+    private final GridBagConstraints highScoresFrameConstraints;
+    private final ListenerCreator listenerCreator;
+
     private JFrame highScoresFrame;
-    private GridBagConstraints highScoresFrameConstraints;
     private JFrame notifyFrame;
     private JLabel beginnerModeName;
     private JLabel beginnerModeResult;
@@ -24,8 +26,6 @@ public class HighScoresMenu {
     private JLabel expertModeName;
     private JLabel expertModeResult;
     private JLabel expertModeRecordsMan;
-
-    private ListenerCreator listenerCreator;
 
     public HighScoresMenu(ListenerCreator listenerCreator) {
         this.listenerCreator = listenerCreator;
