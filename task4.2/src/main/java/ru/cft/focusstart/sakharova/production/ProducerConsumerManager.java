@@ -1,9 +1,11 @@
-package ru.cft.focusstart.sakharova;
+package ru.cft.focusstart.sakharova.production;
 
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 @Slf4j
 public class ProducerConsumerManager {
@@ -16,7 +18,7 @@ public class ProducerConsumerManager {
     private final Object lock = new Object();
 
     private final List<Thread> threads;
-    private final List<Resource> storage;
+    private final Queue<Resource> storage;
 
     public ProducerConsumerManager(int productionTime, int consumptionTime, int producerThreadsNumber,
                                    int consumerThreadsNumber, int storageSize) {
@@ -27,12 +29,12 @@ public class ProducerConsumerManager {
         this.storageSize = storageSize;
 
         threads = new ArrayList<>(producerThreadsNumber + consumerThreadsNumber);
-        storage = new ArrayList<>(storageSize);
+        storage = new LinkedList<>();
     }
 
     private void createProducerThreads() {
         for (int i = 1; i <= producerThreadsNumber; i++) {
-            Thread producer = new Thread(new Producer(this, productionTime));
+            Thread producer = new Thread(new Producer(storage, lock, storageSize, productionTime));
             threads.add(producer);
             producer.start();
         }
@@ -40,7 +42,7 @@ public class ProducerConsumerManager {
 
     private void createConsumerThreads() {
         for (int i = 1; i <= consumerThreadsNumber; i++) {
-            Thread consumer = new Thread(new Consumer(this, consumptionTime));
+            Thread consumer = new Thread(new Consumer(storage, lock, consumptionTime));
             threads.add(consumer);
             consumer.start();
         }
@@ -53,33 +55,5 @@ public class ProducerConsumerManager {
 
     public void stopThreads() {
         threads.forEach(Thread::interrupt);
-    }
-
-    void addResource(Resource resource) throws InterruptedException {
-        synchronized (lock) {
-            while (storage.size() >= storageSize) {
-                lock.wait();
-            }
-            storage.add(resource);
-
-            log.info("Производитель № {} добавил на склад ресурс № {} . Заполненность склада - {}.",
-                    Thread.currentThread().getId(), resource.getId(), storage.size());
-
-            lock.notifyAll();
-        }
-    }
-
-    void removeResource() throws InterruptedException {
-        synchronized (lock) {
-            while (storage.isEmpty()) {
-                lock.wait();
-            }
-            Resource resource = storage.remove(0);
-
-            log.info("Потребитель № {} забрал со склада ресурс № {} . Заполненность склада - {}.",
-                    Thread.currentThread().getId(), resource.getId(), storage.size());
-
-            lock.notifyAll();
-        }
     }
 }

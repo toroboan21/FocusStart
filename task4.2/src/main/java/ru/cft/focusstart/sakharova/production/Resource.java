@@ -1,4 +1,4 @@
-package ru.cft.focusstart.sakharova;
+package ru.cft.focusstart.sakharova.production;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

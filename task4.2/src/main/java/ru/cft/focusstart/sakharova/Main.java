@@ -1,8 +1,8 @@
-package ru.cft.focusstart.sakharova.main;
+package ru.cft.focusstart.sakharova;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.cft.focusstart.sakharova.ProducerConsumerManager;
-import ru.cft.focusstart.sakharova.PropertyParser;
+import ru.cft.focusstart.sakharova.production.ProducerConsumerManager;
+import ru.cft.focusstart.sakharova.properties.PropertyParser;
 
 import java.io.IOException;
 

@@ -1,10 +1,9 @@
-package ru.cft.focusstart.sakharova;
+package ru.cft.focusstart.sakharova.properties;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
@@ -20,15 +19,15 @@ public class PropertyParser {
     private static final String CONSUMPTION_TIME = "consumptionTime";
     private static final String STORAGE_SIZE = "storageSize";
 
-    private int producerThreadsNumber;
-    private int consumerThreadsNumber;
-    private int productionTime;
-    private int consumptionTime;
-    private int storageSize;
+    private final int producerThreadsNumber;
+    private final int consumerThreadsNumber;
+    private final int productionTime;
+    private final int consumptionTime;
+    private final int storageSize;
 
     public PropertyParser() throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader
-                (new FileInputStream("config.properties")))) {
+                (getClass().getResourceAsStream("/config.properties")))) {
             Properties properties = new Properties();
             properties.load(reader);
 
