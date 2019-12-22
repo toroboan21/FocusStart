@@ -27,6 +27,7 @@ class HighScoresManager {
         loadHighScores();
     }
 
+    @SuppressWarnings("unchecked")
     private void loadHighScores() {
         try {
             Object objectFromFile = highScoresStorage.loadHighScoresFile();

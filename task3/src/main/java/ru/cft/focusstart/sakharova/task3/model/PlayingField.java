@@ -12,8 +12,8 @@ class PlayingField {
     @Getter
     private final List<Cell> minedCells;
     private final List<Cell> flaggedCells;
+    private final Cell[][] cells;
 
-    private Cell[][] cells;
     private Map<Integer, CellContent> cellContentMap;
     @Getter
     private int rowsNumber;

@@ -9,8 +9,8 @@ class Timer {
     private static final int SLEEP_TIME = 300;
 
     private final Model model;
+    private final AtomicLong timeSpent;
 
-    private AtomicLong timeSpent;
     private Thread timerThread;
 
     Timer(Model model) {
