@@ -1,5 +1,6 @@
 rootProject.name = 'sakharova'
 include 'task1'
 include 'task2'
+include 'task4.2'
 include 'task5'
 
