@@ -4,7 +4,7 @@
     <property name="LOGS_FOLDER" value="./logs"/>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${LOGS_FOLDER}/chat.log</file>
+        <file>${LOGS_FOLDER}/chatClient.log</file>
         <append>false</append>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %level %logger{35} - %msg%n</pattern>

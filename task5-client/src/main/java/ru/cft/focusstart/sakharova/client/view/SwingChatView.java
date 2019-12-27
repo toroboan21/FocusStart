@@ -1,5 +1,6 @@
 package ru.cft.focusstart.sakharova.client.view;
 
+import org.apache.commons.lang3.StringUtils;
 import ru.cft.focusstart.sakharova.client.common.ChatView;
 import ru.cft.focusstart.sakharova.client.common.Controller;
 
@@ -94,8 +95,11 @@ public class SwingChatView implements ChatView {
 
         sendMessageButton.setText("Отправить сообщение");
         sendMessageButton.addActionListener(e -> {
-            controller.sendChatMessage(sendMessageTextArea.getText());
-            sendMessageTextArea.setText(null);
+            String messageText = sendMessageTextArea.getText();
+            if (StringUtils.isNotBlank(messageText)) {
+                controller.sendChatMessage(sendMessageTextArea.getText());
+                sendMessageTextArea.setText(null);
+            }
         });
 
         sendMessageTextArea.addKeyListener(new KeyListener() {

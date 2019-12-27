@@ -72,10 +72,6 @@ public class ErrorFrame implements ChatModalFrame {
         swingChatView.prepareDialogFrame(errorModalFrame);
     }
 
-    void setErrorLabelText(String text) {
-        errorLabel.setText(text);
-    }
-
     @Override
     public void show() {
         errorModalFrame.setVisible(true);
