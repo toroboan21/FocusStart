@@ -1,8 +1,9 @@
 rootProject.name = 'sakharova'
 include 'task1'
 include 'task2'
+include 'task3'
+include 'task4.1'
 include 'task4.2'
 include 'task5-client'
 include 'task5-common'
 include 'task5-server'
-
